@@ -1,1 +1,1 @@
-The script decides whether the correct number of arguments was used. If not, it shows the proper input. If yes, it does a simple loop, which counts the number of lines and number of lines with the word "sed". These numbers are printed at the end.
+The script decides whether the correct number of arguments (at least one) was used. If not, it shows the proper format. If yes, an object with the text file name as a class variable runs a simple loop, which counts the number of lines and also the number of lines with the word "sed". These numbers are printed at the end.
