@@ -1,1 +1,1 @@
-
+The script decides whether the correct number of arguments was used. If not, it shows the proper input. If yes, it does a simple loop, which counts the number of lines and number of lines with the word "sed". These numbers are printed at the end.
