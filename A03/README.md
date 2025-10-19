@@ -1,6 +1,6 @@
 How to run the script:
 
-1)Clone repository: git clone git clone <https://github.com/vf375/ci2.git> A03
+1)Clone repository: git clone <https://github.com/vf375/ci2.git> A03
 
 2)Create venv in cloned folder:
 
