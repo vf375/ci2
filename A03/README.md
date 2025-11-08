@@ -17,11 +17,10 @@ venv\Scripts\activate
 3)Install requirements:
 pip install -r requirements.txt
 
-4)Run the script with your XML file:
-python strankator.py <path/to/yourfile.xml>
+4)Run the script with the benzidine XML file:
+python pubchem_parser.py PubChem_benzidine.xml
 
 What the script does:
-takes an xml file as an argument and if said xml file has elements cmpdname, prints each of those in a separate line
-
+takes the xml file as an argument and prints each of its iupacname elements on a separate line
 
 
