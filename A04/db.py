@@ -5,73 +5,56 @@ import os
 
 class DatabaseMaker:
     def __init__(self, csv_file):
-        self.csv_file = csv_file
-        self.table_name = os.path.splitext(os.path.basename(csv_file))[0]
+        self.csv_file = csv_file # filename, the only input for using the script
+        self.table_name = os.path.splitext(os.path.basename(csv_file))[0]   #prepares name without extension
 
     def make_sql(self):
-        connection = sqlite3.connect('db.sqlite')
+        connection = sqlite3.connect('db.sqlite')):
         cursor = connection.cursor()
 
-        with open(self.csv_file, encoding="utf8") as f:
-            reader = csv.reader(f, delimiter=';')
+        with open(self.csv_file, encoding="utf8") as f:  
+            reader = csv.reader(f, delimiter=';')        #read file is a local variable
 
             for i, row in enumerate(reader):
-                if i == 0:
-                    # First row → column names
-                    self.columns = [col.strip().strip('"') for col in row]
+                if i == 0:          
+                    
+                    self.columns = row
+                    columns_def = [f"{self.columns[0]} TEXT UNIQUE"]   # creates table with UNIQUE constraint on the first column (ID)
+                    columns_def += [f"{c} TEXT" for c in self.columns[1:]] # defines the other columns
 
-                    # Create table with UNIQUE constraint on the first column (ID)
-                    columns_def = [f"{self.columns[0]} TEXT UNIQUE"]
-                    columns_def += [f"{c} TEXT" for c in self.columns[1:]]
-
-                    create_stmt = f"""
+                    create_stmt = f"""      # preparing the CREATE command for SQLite
                     CREATE TABLE IF NOT EXISTS {self.table_name} (
-                        {', '.join(columns_def)}
+                        {', '.join(columns_def)}       #uses defined column names
                     );
                     """
                     cursor.execute(create_stmt)
 
-                    # Prepare insert statement with INSERT OR IGNORE
-                    placeholders = ", ".join(["?" for _ in self.columns])
+                    # preparing INSERT command for SQLite, it will be a method so that it works outside this block
+                    placeholders = ", ".join(["?" for _ in self.columns])  # defines a string with correct number of SQLite '?' placeholders
                     self.insert_stmt = f"INSERT OR IGNORE INTO {self.table_name} ({', '.join(self.columns)}) VALUES ({placeholders})"
                 else:
-                    # Clean each cell
-                    cleaned_row = [value.strip().strip('"') for value in row]
-
-                    # Skip rows that are empty or malformed
-                    if len(cleaned_row) != len(self.columns):
-                        continue
-                    if all(cell == '' for cell in cleaned_row):
-                        continue
-
-                    cursor.execute(self.insert_stmt, cleaned_row)
+                    cursor.execute(self.insert_stmt, row) #creates all rows other than the first one
 
         connection.commit()
         connection.close()
 
-    def count_cities_by_country(self, country_code):
-        """Return the number of cities for a given CountryCode"""
-        connection = sqlite3.connect('db.sqlite')
+    def count_albanian_cities(self):
+        connection = sqlite3.connect('db.sqlite')   #connects to previously created database
         cursor = connection.cursor()
 
         cursor.execute(
             f"SELECT COUNT(*) FROM {self.table_name} WHERE CountryCode=?",
-            (country_code,)
+            ('ALB',)
         )
-        result = cursor.fetchone()[0]
+        count = cursor.fetchone()[0]  #the count as a local variable from the previous line
 
         connection.close()
-        return result
+        return count     #this method gives count as output
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python db.py <csv_file>")
-        sys.exit(1)
+if __name__ == "__main__":    #the non-module scenario
 
     csv_file = sys.argv[1]
     db = DatabaseMaker(csv_file)
 
     db.make_sql()
-    # Count cities in Albania (ALB)
-    count_alb = db.count_cities_by_country("ALB")
-    print(f"How many cities in the database are from Albania? {count_alb}.")
+    print(f"How many cities in the database are from Albania? {db.count_albanian_cities()}.")
