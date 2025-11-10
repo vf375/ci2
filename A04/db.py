@@ -9,7 +9,7 @@ class DatabaseMaker:
         self.table_name = os.path.splitext(os.path.basename(csv_file))[0]   #prepares name without extension
 
     def make_sql(self):
-        connection = sqlite3.connect('db.sqlite')):
+        connection = sqlite3.connect('db.sqlite')
         cursor = connection.cursor()
 
         with open(self.csv_file, encoding="utf8") as f:  
@@ -22,9 +22,11 @@ class DatabaseMaker:
                     columns_def = [f"{self.columns[0]} TEXT UNIQUE"]   # creates table with UNIQUE constraint on the first column (ID)
                     columns_def += [f"{c} TEXT" for c in self.columns[1:]] # defines the other columns
 
-                    create_stmt = f"""      # preparing the CREATE command for SQLite
+                    # preparing the CREATE command for SQLite
+                    # will use defined column names
+                    create_stmt = f"""     
                     CREATE TABLE IF NOT EXISTS {self.table_name} (
-                        {', '.join(columns_def)}       #uses defined column names
+                        {', '.join(columns_def)}      
                     );
                     """
                     cursor.execute(create_stmt)
