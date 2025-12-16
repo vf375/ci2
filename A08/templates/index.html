@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+    <label for="smiles">Enter canonical SMILES:</label>
+    <input type="text" id="smiles" name="smiles" required>
+    <button type="submit">Search</button>
+</form>
+{% endblock %}
+

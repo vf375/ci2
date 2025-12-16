@@ -1,0 +1,140 @@
+/* =========================
+   General body and layout
+========================= */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Center everything in a main container */
+header, main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =========================
+   Header
+========================= */
+header {
+    text-align: center;
+    background-color: #2c7be5;
+    color: white;
+    margin-bottom: 30px;
+    border-radius: 0 0 12px 12px;
+    padding: 20px 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+/* =========================
+   Forms (search)
+========================= */
+form {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #2c7be5;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1a68d1;
+}
+
+/* =========================
+   Results page
+========================= */
+.results-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin: 0 auto 30px auto;
+    max-width: 700px;
+}
+
+/* Compound list styling */
+.compound-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.compound-list li {
+    background-color: #f0f4f8;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-left: 5px solid #2c7be5;
+    border-radius: 6px;
+}
+
+/* =========================
+   Error messages
+========================= */
+.error {
+    background-color: #fdecea;
+    color: #b00020;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   Links
+========================= */
+a {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    color: #2c7be5;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   Headings
+========================= */
+h2 {
+    margin-top: 0;
+    color: #2c7be5;
+    text-align: center;
+}
+``
+
+

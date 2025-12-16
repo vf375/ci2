@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results-container">
+    <a href="/">New search</a>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if compound %}
+        <h2>Compound information</h2>
+        <ul class="compound-list">
+            <li><strong>CHEMBL ID:</strong> {{ compound.chembl_id }}</li>
+            <li><strong>Name:</strong> {{ compound.name }}</li>
+            <li><strong>Molecular formula:</strong> {{ compound.formula }}</li>
+            <li><strong>Molecular weight:</strong> {{ compound.mw }}</li>
+            <li><strong>ALogP:</strong> {{ compound.alogp }}</li>
+            <li><strong>Molecule Type:</strong> {{ compound.molecule_type }}</li>
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}
