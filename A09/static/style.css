@@ -74,6 +74,11 @@ button:hover {
     background-color: #1a68d1;
 }
 
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 /* =========================
    Results page
 ========================= */
@@ -84,6 +89,23 @@ button:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     margin: 0 auto 30px auto;
     max-width: 700px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Image container styling */
+.mol-image-container {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.mol-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
 }
 
 /* Compound list styling */
@@ -99,6 +121,11 @@ button:hover {
     padding: 12px;
     border-left: 5px solid #2c7be5;
     border-radius: 6px;
+    word-wrap: break-word;
+}
+
+.compound-list strong {
+    color: #2c7be5;
 }
 
 /* =========================
@@ -110,6 +137,8 @@ button:hover {
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 20px;
+    border: 1px solid #fcc;
+    display: none; /* Hidden by default */
 }
 
 /* =========================
@@ -134,5 +163,10 @@ h2 {
     margin-top: 0;
     color: #2c7be5;
     text-align: center;
+    margin-bottom: 20px;
 }
-``
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

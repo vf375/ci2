@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molecular Search & 3D Render</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Chemistry 3D Visualizer</h1>
+</header>
+
+<main>
+    <!-- Search Form -->
+    <form id="searchForm">
+        <label for="smilesInput">Enter SMILES String:</label>
+        <input type="text" id="smilesInput" name="smiles" placeholder="e.g. C1=CC=CC=C1" required>
+        <button type="submit" id="searchBtn">Generate 3D Model</button>
+    </form>
+
+    <!-- Error Message Container -->
+    <div id="errorContainer" class="error"></div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer" class="results-container" style="display: none;">
+        <h2>Molecule Results</h2>
+        
+        <!-- 3D Image Display -->
+        <div class="mol-image-container">
+            <img id="molImage" src="" alt="3D Molecule Structure">
+        </div>
+
+        <!-- Data List -->
+        <ul class="compound-list" id="dataList">
+            <!-- Properties will be injected here via JS -->
+        </ul>
+    </div>
+</main>
+
+<script>
+    const form = document.getElementById('searchForm');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const errorContainer = document.getElementById('errorContainer');
+    const molImage = document.getElementById('molImage');
+    const dataList = document.getElementById('dataList');
+    const searchBtn = document.getElementById('searchBtn');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Reset UI
+        errorContainer.style.display = 'none';
+        errorContainer.textContent = '';
+        resultsContainer.style.display = 'none';
+        searchBtn.disabled = true;
+        searchBtn.textContent = 'Generating 3D Model...';
+
+        const smiles = document.getElementById('smilesInput').value;
+
+        try {
+            const response = await fetch('/api/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ smiles: smiles })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'An error occurred during processing.');
+            }
+
+            // 1. Update Image
+            if (data.image_url) {
+                molImage.src = data.image_url;
+            }
+
+            // 2. Clear previous list
+            dataList.innerHTML = '';
+
+            // 3. Helper to add list items
+            const addItem = (label, value) => {
+                if (value !== null && value !== undefined && value !== '') {
+                    const li = document.createElement('li');
+                    // Ensure the label is formatted nicely
+                    li.innerHTML = `<strong>${label}:</strong> ${value}`;
+                    dataList.appendChild(li);
+                }
+            };
+
+            // 4. Dynamic Data Loop
+            // This loop goes through EVERYTHING sent by the Python API.
+            // It automatically formats keys (e.g., "molecular_weight" -> "Molecular Weight")
+            
+            const ignoredKeys = ['image_url', 'smiles_used', 'smiles']; // Don't duplicate these in the list
+
+            // Explicitly show the SMILES used first
+            addItem('SMILES', data.smiles_used || smiles);
+
+            for (const [key, value] of Object.entries(data)) {
+                // Skip the image and raw smiles as we handled them above
+                if (ignoredKeys.includes(key)) continue;
+
+                // Handle nested objects (like 'molecule_properties': { 'mw': 200 })
+                if (typeof value === 'object' && value !== null) {
+                    for (const [subKey, subValue] of Object.entries(value)) {
+                        const formattedLabel = subKey.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        addItem(formattedLabel, subValue);
+                    }
+                } else {
+                    // Format the key: replace underscores with spaces and capitalize words
+                    const formattedLabel = key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    addItem(formattedLabel, value);
+                }
+            }
+            
+            // Show results
+            resultsContainer.style.display = 'block';
+
+        } catch (err) {
+            console.error(err);
+            errorContainer.textContent = err.message;
+            errorContainer.style.display = 'block';
+        } finally {
+            searchBtn.disabled = false;
+            searchBtn.textContent = 'Generate 3D Model';
+        }
+    });
+</script>
+
+</body>
+</html>
