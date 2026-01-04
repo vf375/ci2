@@ -31,4 +31,4 @@ python app.py
 6. Open browser at the suggested URL
 7. Enter canonical smiles into the search field
 
-The returned page will contain the SMILES, Chembl ID, logarithm of partition coefficient, molecular weight, name and image of the given compound. 
+The application will utilize JavaScript to display the SMILES, Chembl ID, logarithm of partition coefficient, molecular weight, name and image of the given compound. 
